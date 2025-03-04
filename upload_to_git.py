@@ -79,7 +79,8 @@ def upload_file(file_path):
     commit_message = f"Auto-commit: Uploading {file_name} - Version {timestamp}"
 
     print('Checking command')
-    run_command('git status')
+    git_status_output=run_command('git status')
+    print(f'Git Status Output: {git_status_output}')
 
     print("Checking SSH authentication...")
     check_ssh_auth()
