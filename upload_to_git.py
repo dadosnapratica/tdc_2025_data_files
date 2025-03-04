@@ -5,7 +5,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import platform
 
-sys.stdout.reconfigure(encoding='utf-8')
+#sys.stdout.reconfigure(encoding='utf-8')
 
 # Load environment variables from .env file
 load_dotenv()
@@ -37,11 +37,11 @@ def check_ssh_auth():
         output = run_command("ssh -T git@github.com")
         print(f'SSH Access Validation Output: {output}')
         if "successfully" in output:
-            print("✅ SSH authentication with GitHub verified.")
+            print("[OK] SSH authentication with GitHub verified.")
         else:
-            print("⚠️ SSH authentication issue detected.")
+            print("[ALERT] SSH authentication issue detected.")
     except SystemExit:
-        print("❌ Failed to authenticate via SSH. Ensure your SSH key is added to GitHub.")
+        print("[ERROR] Failed to authenticate via SSH. Ensure your SSH key is added to GitHub.")
         sys.exit(1)
 
 def clone_or_pull_repo():
@@ -55,7 +55,7 @@ def clone_or_pull_repo():
 
 def enable_git_lfs():
     """Ensure Git LFS is installed and configured for the repository."""
-    print("🔹 Enabling Git LFS...")
+    print("[RUN] Enabling Git LFS...")
     run_command("git lfs install", cwd=REPO_DIR)
 
     # Track large file extensions
@@ -70,7 +70,7 @@ def enable_git_lfs():
 def upload_file(file_path):
     """Upload the specified file to the Git repository, handling large files with LFS."""
     if not os.path.isfile(file_path):
-        print(f"Error: File '{file_path}' not found!")
+        print(f"[ERROR] Error: File '{file_path}' not found!")
         sys.exit(1)
 
     file_name = os.path.basename(file_path)
@@ -78,7 +78,7 @@ def upload_file(file_path):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     commit_message = f"Auto-commit: Uploading {file_name} - Version {timestamp}"
 
-    print('Checking command', flush=True)
+    print('Checking command')
     run_command('git status')
 
     print("Checking SSH authentication...")
@@ -101,7 +101,7 @@ def upload_file(file_path):
 
     # Ensure LFS is tracking large files
     if file_extension in LFS_TRACKED_EXTENSIONS:
-        print(f"🔹 '{file_name}' is a large file - Ensuring Git LFS is tracking it.")
+        print(f"[RUN] '{file_name}' is a large file - Ensuring Git LFS is tracking it.")
         run_command(f"git lfs track *.{file_extension}", cwd=REPO_DIR)
 
     print("Add changes...")
@@ -113,7 +113,7 @@ def upload_file(file_path):
     print("Pushing changes via SSH...")
     run_command(f"git push origin {BRANCH} --no-verify", cwd=REPO_DIR)
 
-    print(f"✅ File '{file_name}' uploaded successfully with commit message: '{commit_message}'")
+    print(f"[OK] File '{file_name}' uploaded successfully with commit message: '{commit_message}'")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
