@@ -22,7 +22,7 @@ LFS_TRACKED_EXTENSIONS = os.getenv("LFS_TRACKED_EXTENSIONS", "csv,zip,mp4,json")
 def run_command(command, cwd=None):
     """Run a shell command and return output."""
     result = subprocess.run(command, shell=True, cwd=cwd, capture_output=True, text=True)
-    print(f'[XX] Command Result: {result}')
+    #print(f'[XX] Command Result: {result}')
     if "ssh -T git@github.com" not in command:
         if result.returncode != 0:
             print(f"Error: {result.stderr}")
