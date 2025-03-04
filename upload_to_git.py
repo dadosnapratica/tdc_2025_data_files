@@ -78,7 +78,7 @@ def upload_file(file_path):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     commit_message = f"Auto-commit: Uploading {file_name} - Version {timestamp}"
 
-    print('Checking command')
+    print('Checking command', flush=True)
     run_command('git status')
 
     print("Checking SSH authentication...")
@@ -96,14 +96,13 @@ def upload_file(file_path):
     copy_command=rf"copy {file_path} {dest_path}" if platform.system() == "Windows" else r"cp {file_path} {dest_path}" 
     run_command(copy_command) 
     
-
     print("Adding file to Git...")
     run_command(f"git add {WATCH_DIR}/{file_name}", cwd=REPO_DIR)
 
     # Ensure LFS is tracking large files
     if file_extension in LFS_TRACKED_EXTENSIONS:
         print(f"🔹 '{file_name}' is a large file - Ensuring Git LFS is tracking it.")
-        run_command(f"git lfs track '*.{file_extension}'", cwd=REPO_DIR)
+        run_command(f"git lfs track *.{file_extension}", cwd=REPO_DIR)
 
     print("Add changes...")
     run_command('git add . ', cwd=REPO_DIR)
