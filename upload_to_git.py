@@ -113,7 +113,7 @@ def upload_file(file_path):
     print("Pushing changes via SSH...")
     run_command(f"git push origin {BRANCH} --no-verify", cwd=REPO_DIR)
 
-    print(f"[OK] File '{file_name}' uploaded successfully with commit message: '{commit_message}'")
+    print(f"✅ File '{file_name}' uploaded successfully with commit message: '{commit_message}'")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
