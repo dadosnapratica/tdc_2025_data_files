@@ -78,9 +78,8 @@ def upload_file(file_path):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     commit_message = f"Auto-commit: Uploading {file_name} - Version {timestamp}"
 
-    print('Checking command')
+    print('Checking changes')
     git_status_output=run_command('git status')
-    #print(f'Git Status Output: {git_status_output}')
     if 'nothing to commit' in git_status_output:
         print('No changes to commit')
         exit(0)
