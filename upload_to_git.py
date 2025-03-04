@@ -83,6 +83,9 @@ def upload_file(file_path):
     if 'nothing to commit' in git_status_output:
         print('No changes to commit')
         exit(0)
+    else:
+        print("Follow changes detected with git status")
+        print(git_status_output)
 
     print("Checking SSH authentication...")
     check_ssh_auth()
